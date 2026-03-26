@@ -12,17 +12,34 @@ import messageRoutes from "./routes/messageRoutes.js";
 
 const app = express();
 
-const allowedOrigins = [
+const normalizeOrigin = (value) =>
+  String(value || "")
+    .trim()
+    .replace(/\/+$/, "");
+
+const configuredOrigins = [
+  process.env.CLIENT_ORIGIN,
+  ...String(process.env.CLIENT_ORIGINS || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean),
+]
+  .map(normalizeOrigin)
+  .filter(Boolean);
+
+const allowedOrigins = new Set([
   "http://localhost:5173", // Vite dev server
   "http://localhost:4173", // Vite preview
-  process.env.CLIENT_ORIGIN, // production origin via env
-].filter(Boolean);
+  ...configuredOrigins,
+]);
 
 app.use(
   cors({
     origin: (origin, cb) => {
       // allow server-to-server / curl / Postman (no Origin header)
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      if (!origin || allowedOrigins.has(normalizeOrigin(origin))) {
+        return cb(null, true);
+      }
       cb(new Error(`CORS: origin ${origin} not allowed`));
     },
     credentials: true,

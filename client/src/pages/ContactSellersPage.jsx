@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { buildApiUrl } from "../api/baseUrl.js";
 
 function getSanitizedToken() {
   const raw = String(localStorage.getItem("mm_token") || "").trim();
@@ -80,11 +81,14 @@ export default function ContactSellersPage() {
 
       const listingId = Number(location.state?.listingId);
       if (Number.isInteger(listingId) && listingId > 0) {
-        const initRes = await fetch("/api/messages/conversations", {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({ listing_id: listingId }),
-        });
+        const initRes = await fetch(
+          buildApiUrl("/api/messages/conversations"),
+          {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ listing_id: listingId }),
+          },
+        );
 
         if (initRes.ok) {
           const initData = await initRes.json();
@@ -101,7 +105,7 @@ export default function ContactSellersPage() {
   }
 
   async function loadConversations(conversationIdToSelect = null) {
-    const response = await fetch("/api/messages/conversations", {
+    const response = await fetch(buildApiUrl("/api/messages/conversations"), {
       headers: getAuthHeaders(),
     });
 
@@ -137,7 +141,7 @@ export default function ContactSellersPage() {
     markConversationSeen(conv);
     try {
       const response = await fetch(
-        `/api/messages/conversations/${conv.id}/messages`,
+        buildApiUrl(`/api/messages/conversations/${conv.id}/messages`),
         {
           headers: getAuthHeaders(),
         },
@@ -161,7 +165,9 @@ export default function ContactSellersPage() {
     try {
       setSending(true);
       const response = await fetch(
-        `/api/messages/conversations/${selectedConversation.id}/messages`,
+        buildApiUrl(
+          `/api/messages/conversations/${selectedConversation.id}/messages`,
+        ),
         {
           method: "POST",
           headers: getAuthHeaders(),

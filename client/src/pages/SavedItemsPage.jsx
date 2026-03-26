@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { buildApiUrl } from "../api/baseUrl.js";
 
 export default function SavedItemsPage() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function SavedItemsPage() {
         return;
       }
 
-      const response = await fetch("/api/listings");
+      const response = await fetch(buildApiUrl("/api/listings"));
       if (!response.ok) throw new Error("Failed to fetch listings");
       const allListings = await response.json();
 

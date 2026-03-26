@@ -4,10 +4,12 @@
  * localStorage so the session survives a hard reload.
  */
 
+import { buildApiUrl } from "./baseUrl.js";
+
 const BASE = "/api/auth";
 
 async function request(path, { headers: extraHeaders, ...rest } = {}) {
-  const res = await fetch(`${BASE}${path}`, {
+  const res = await fetch(buildApiUrl(`${BASE}${path}`), {
     headers: { "Content-Type": "application/json", ...extraHeaders },
     ...rest,
   });

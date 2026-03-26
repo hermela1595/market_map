@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { findUserById } from "../models/User.js";
+import { findUserById } from "../models/user.js";
 
 const getJwtSecret = () =>
   String(process.env.JWT_SECRET || "")

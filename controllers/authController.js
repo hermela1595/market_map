@@ -4,7 +4,7 @@ import {
   findUserByEmail,
   createUser,
   updateUserPasswordByEmail,
-} from "../models/User.js";
+} from "../models/user.js";
 
 const getJwtSecret = () => {
   const raw = String(process.env.JWT_SECRET || "");

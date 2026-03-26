@@ -1,3 +1,5 @@
+import { buildApiUrl } from "./baseUrl.js";
+
 const LISTINGS_BASE = "/api/listings";
 
 function sanitizeToken(value) {
@@ -15,7 +17,7 @@ function resolveToken(preferredToken) {
 
 async function request(path, { token, headers, ...rest } = {}) {
   const resolvedToken = resolveToken(token);
-  const res = await fetch(`${LISTINGS_BASE}${path}`, {
+  const res = await fetch(buildApiUrl(`${LISTINGS_BASE}${path}`), {
     headers: {
       "Content-Type": "application/json",
       ...(resolvedToken ? { Authorization: `Bearer ${resolvedToken}` } : {}),

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { buildApiUrl } from "../api/baseUrl.js";
 
 export default function BrowseListingsPage() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function BrowseListingsPage() {
 
   async function fetchListings() {
     try {
-      const response = await fetch("/api/listings");
+      const response = await fetch(buildApiUrl("/api/listings"));
       if (!response.ok) throw new Error("Failed to fetch listings");
       const data = await response.json();
       setListings(data);
@@ -39,8 +40,8 @@ export default function BrowseListingsPage() {
   async function fetchCategoriesAndRegions() {
     try {
       const [catRes, regRes] = await Promise.all([
-        fetch("/api/listings/categories"),
-        fetch("/api/listings/regions"),
+        fetch(buildApiUrl("/api/listings/categories")),
+        fetch(buildApiUrl("/api/listings/regions")),
       ]);
       if (catRes.ok) setCategories(await catRes.json());
       if (regRes.ok) setRegions(await regRes.json());

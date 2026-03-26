@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { buildApiUrl } from "../api/baseUrl.js";
 
 export default function ListingDetailPage() {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export default function ListingDetailPage() {
 
   async function fetchListingDetails() {
     try {
-      const response = await fetch(`/api/listings/${id}`);
+      const response = await fetch(buildApiUrl(`/api/listings/${id}`));
       if (!response.ok) {
         navigate("/buyer/browse");
         return;
