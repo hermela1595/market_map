@@ -13,7 +13,7 @@ export default function DashboardPage() {
 
   function handleLogout() {
     logout();
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   }
 
   return (
