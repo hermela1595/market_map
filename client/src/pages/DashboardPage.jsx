@@ -12,8 +12,8 @@ export default function DashboardPage() {
   const navigate = useNavigate();
 
   function handleLogout() {
-    logout();
     navigate("/", { replace: true });
+    logout();
   }
 
   return (
